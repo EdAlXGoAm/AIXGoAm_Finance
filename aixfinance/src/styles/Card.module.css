@@ -1,0 +1,12 @@
+/* src/styles/Card.module.css */
+
+.card {
+  width: 200px;
+  padding: 16px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: move;
+  position: absolute; /* Para permitir la libre posición dentro del canvas */
+}

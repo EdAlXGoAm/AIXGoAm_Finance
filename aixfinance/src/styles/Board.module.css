@@ -1,0 +1,10 @@
+/* src/styles/Board.module.css */
+
+.board {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 16px;
+    justify-content: center;
+  }
+  
