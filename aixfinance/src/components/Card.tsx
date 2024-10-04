@@ -1,11 +1,9 @@
-// src/components/Card.tsx
-
 import React from 'react';
 import Draggable from 'react-draggable';
 import styles from '../styles/Card.module.css';
 
 interface CardProps {
-  id: number;
+  id: string | undefined;
   title: string;
   content: string;
 }

@@ -1,13 +1,26 @@
-/* src/styles/Card.module.css */
-
 .card {
-    width: 200px;
-    padding: 16px;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-    cursor: move;
-    position: absolute; /* Para permitir la libre posición dentro del canvas */
-  }
-  
+  width: 250px;
+  padding: 16px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: move;
+  position: absolute; /* Para permitir la libre posición dentro del canvas */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.card p {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+  white-space: pre-line; /* Preserva saltos de línea */
+}
