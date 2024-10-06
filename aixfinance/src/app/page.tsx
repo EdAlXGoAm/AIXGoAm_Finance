@@ -1,9 +1,7 @@
 "use client";
 
-
 import React, { useState } from 'react';
 import Canvas from '../components/Canvas';
-import NewCardForm from '../components/NewCardForm';
 import '../styles/globals.css';
 
 const HomePage: React.FC = () => {
@@ -15,8 +13,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div>
-      <Canvas refresh={refresh} />
-      <NewCardForm onAdd={handleAdd} />
+      <Canvas refresh={refresh} setRefresh={setRefresh} />
     </div>
   );
 };

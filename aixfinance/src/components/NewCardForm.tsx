@@ -1,14 +1,18 @@
-// src/components/NewCardForm.tsx
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/NewCardForm.module.css';
-import { createExpense } from '../services/apiService';
+import { createExpense, updateExpense, Expense } from '../services/apiService';
 
 interface NewCardFormProps {
   onAdd: () => void;
+  editingExpense?: Expense;
+  onCancelEdit?: () => void;
 }
 
-const NewCardForm: React.FC<NewCardFormProps> = ({ onAdd }) => {
+const NewCardForm: React.FC<NewCardFormProps> = ({
+  onAdd,
+  editingExpense,
+  onCancelEdit,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   // Estado inicial para los datos del gasto
@@ -29,6 +33,26 @@ const NewCardForm: React.FC<NewCardFormProps> = ({ onAdd }) => {
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (editingExpense) {
+      setExpenseData({
+        type: editingExpense.type,
+        date: editingExpense.date,
+        time: editingExpense.time,
+        title: editingExpense.title,
+        amount: editingExpense.amount.toString(),
+        category_group_name: editingExpense.category_group_name,
+        category: editingExpense.category,
+        type_group_name: editingExpense.type_group_name,
+        type_name: editingExpense.type_name,
+        account: editingExpense.account,
+        frequency: editingExpense.frequency,
+        notes: editingExpense.notes || '',
+      });
+      setIsOpen(true);
+    }
+  }, [editingExpense]);
 
   // Maneja los cambios en los campos del formulario
   const handleChange = (
@@ -63,8 +87,14 @@ const NewCardForm: React.FC<NewCardFormProps> = ({ onAdd }) => {
     };
 
     try {
-      await createExpense(expenseDataToSubmit);
-      onAdd(); // Notifica al componente padre para recargar los gastos
+      if (editingExpense) {
+        await updateExpense(editingExpense._id, expenseDataToSubmit as Expense);
+        onAdd();
+        if (onCancelEdit) onCancelEdit();
+      } else {
+        await createExpense(expenseDataToSubmit as Expense);
+        onAdd(); // Notifica al componente padre para recargar los gastos
+      }
       setIsOpen(false);
       setExpenseData({
         type: 'gasto',
@@ -87,19 +117,41 @@ const NewCardForm: React.FC<NewCardFormProps> = ({ onAdd }) => {
     }
   };
 
+  const handleClose = () => {
+    setIsOpen(false);
+    if (onCancelEdit) onCancelEdit();
+    setExpenseData({
+      type: 'gasto',
+      date: new Date().toISOString().split('T')[0],
+      time: new Date().toTimeString().split(' ')[0].slice(0, 5),
+      title: '',
+      amount: '',
+      category_group_name: '',
+      category: 'Sin Categoría',
+      type_group_name: '',
+      type_name: '',
+      account: '',
+      frequency: '',
+      notes: '',
+    });
+    setError(null);
+  };
+
   return (
     <>
-      <button className={styles.addButton} onClick={() => setIsOpen(true)}>
-        +
-      </button>
+      {!editingExpense && (
+        <button className={styles.addButton} onClick={() => setIsOpen(true)}>
+          +
+        </button>
+      )}
 
       {isOpen && (
-        <div className={styles.overlay} onClick={() => setIsOpen(false)}>
+        <div className={styles.overlay} onClick={handleClose}>
           <div
             className={styles.modal}
             onClick={(e) => e.stopPropagation()} // Evita cerrar al hacer clic dentro del modal
           >
-            <h2>Agregar Nuevo Gasto</h2>
+            <h2>{editingExpense ? 'Editar Gasto' : 'Agregar Nuevo Gasto'}</h2>
             <form onSubmit={handleSubmit}>
               <label>
                 Tipo:
@@ -154,21 +206,11 @@ const NewCardForm: React.FC<NewCardFormProps> = ({ onAdd }) => {
                 />
               </label>
               <label>
-                Grupo de Categoría:
+                Tipo:
                 <input
                   type="text"
-                  name="category_group_name"
-                  value={expenseData.category_group_name}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              <label>
-                Categoría:
-                <input
-                  type="text"
-                  name="category"
-                  value={expenseData.category}
+                  name="type_name"
+                  value={expenseData.type_name}
                   onChange={handleChange}
                   required
                 />
@@ -184,11 +226,21 @@ const NewCardForm: React.FC<NewCardFormProps> = ({ onAdd }) => {
                 />
               </label>
               <label>
-                Tipo:
+                Categoría:
                 <input
                   type="text"
-                  name="type_name"
-                  value={expenseData.type_name}
+                  name="category"
+                  value={expenseData.category}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <label>
+                Grupo de Categoría:
+                <input
+                  type="text"
+                  name="category_group_name"
+                  value={expenseData.category_group_name}
                   onChange={handleChange}
                   required
                 />
@@ -232,9 +284,9 @@ const NewCardForm: React.FC<NewCardFormProps> = ({ onAdd }) => {
               {error && <p className={styles.error}>{error}</p>}
               <div className={styles.buttons}>
                 <button type="submit" disabled={loading}>
-                  {loading ? 'Agregando...' : 'Agregar'}
+                  {loading ? (editingExpense ? 'Actualizando...' : 'Agregando...') : (editingExpense ? 'Actualizar' : 'Agregar')}
                 </button>
-                <button type="button" onClick={() => setIsOpen(false)}>
+                <button type="button" onClick={handleClose}>
                   Cancelar
                 </button>
               </div>
