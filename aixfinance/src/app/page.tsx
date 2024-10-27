@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Canvas from '../components/Canvas';
+import Caducidad from '../components/Alimentos/Caducidad'
 import '../styles/globals.css';
 
 const HomePage: React.FC = () => {
@@ -13,7 +14,12 @@ const HomePage: React.FC = () => {
 
   return (
     <div>
-      <Canvas refresh={refresh} setRefresh={setRefresh} />
+      {/* <div>
+        <Canvas refresh={refresh} setRefresh={setRefresh} />
+      </div> */}
+      <div>
+        <Caducidad refresh={refresh} setRefresh={setRefresh}/>
+      </div>
     </div>
   );
 };

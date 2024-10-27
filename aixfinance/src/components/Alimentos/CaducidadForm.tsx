@@ -1,0 +1,125 @@
+import React, { useState, useEffect } from 'react';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import styles from '../../styles/Alimentos/CaducidadForm.module.css';
+import { Caducidad } from '../../services/apiCaducidad';
+import { CaducidadElements } from '../../constants/CaducidadFormElements';
+import { getDaysBetweenDates } from '../../utils/dateUtils';
+interface TestCaducidadFormProps {
+  onAdd: () => void;
+  elementToEdit?: Caducidad;
+  onCleanData: () => void;
+}
+
+const TestCaducidadForm: React.FC<TestCaducidadFormProps> = ({
+  onAdd,
+  elementToEdit,
+  onCleanData
+}) => {
+  
+  const {
+    emptyElementData,
+    isOpen, setIsOpen,
+    error, setError,
+    loading, setLoading,
+    formData, setFormData,
+    handleChange,
+    handleSubmit,
+    handleClose,
+    handleCalendarChange
+  } = CaducidadElements({
+    onCleanData: () => onCleanData(),
+    elementToEdit: elementToEdit,
+  });
+
+  useEffect(() => {
+    if(elementToEdit) {
+      setFormData({
+        date_of_purchase: elementToEdit.data.date_of_purchase,
+        date_of_expiration: elementToEdit.data.date_of_expiration,
+      });
+      setIsOpen(true);
+    }
+  }, [elementToEdit]);
+
+  const tileClassName = ({ date, view }: { date: Date, view: string }) => {
+    // console.log("Date: ", date, "\nView: ", view)
+    // console.log("Form data: ", formData)
+    if (view === 'month') { // Solo aplicar en la vista de mes
+      const purchaseDate = new Date(formData.date_of_purchase);
+      const expirationDate = new Date(formData.date_of_expiration);
+      // Remover la hora para evitar problemas de comparación
+      const currentDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      const startDate = new Date(purchaseDate.getFullYear(), purchaseDate.getMonth(), purchaseDate.getDate());
+      const endDate = new Date(expirationDate.getFullYear(), expirationDate.getMonth(), expirationDate.getDate());
+      // console.log("Current date: ", currentDate, "\nStart date: ", startDate, "\nEnd date: ", endDate)
+      if (currentDate >= startDate && currentDate <= endDate) {
+        return styles.highlight;
+      }
+    }
+    return null;
+  };
+
+  return (
+    <>
+      {!elementToEdit && (
+        <button className={styles.addButton} onClick={() => setIsOpen(true)}>
+          +
+        </button>
+      )}
+      {isOpen && (
+        <div className={styles.overlay} onClick={handleClose}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <h2>{elementToEdit ? 'Editar Caducidad' : 'Agregar Caducidad'}</h2>
+
+            {/* Calendario Dinámico */}
+            <div className={styles.calendarContainer}>
+              <Calendar
+                value={[formData.date_of_purchase, formData.date_of_expiration]}
+                tileClassName={tileClassName}
+                selectRange={true}
+                onChange={handleCalendarChange}
+              />
+            </div>
+
+            {/* Formulario */}
+            <form onSubmit={handleSubmit}>
+              <label>Fecha de compra</label>
+              <input
+                type="date"
+                name="date_of_purchase"
+                value={formData.date_of_purchase.toISOString().split('T')[0]}
+                onChange={handleChange}
+                required
+              />
+              <label>Fecha de expiración</label>
+              <input
+                type="date"
+                name="date_of_expiration"
+                value={formData.date_of_expiration.toISOString().split('T')[0]}
+                onChange={handleChange}
+                required
+              />
+              <label>Días a expiración</label>
+              <input
+                type="text"
+                name="days_to_expiration"
+                value={getDaysBetweenDates(formData.date_of_purchase, formData.date_of_expiration).toString()}
+                onChange={handleChange}
+                required
+              />
+              {error && <p className={styles.error}>{error}</p>}
+              <div className={styles.buttons}>
+                <button type="submit" disabled={loading}>
+                  {loading ? (elementToEdit ? 'Actualizando...' : 'Agregando...') : (elementToEdit ? 'Actualizar' : 'Agregar')}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+export default TestCaducidadForm;
