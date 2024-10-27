@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../styles/Alimentos/CaducidadForm.module.css';
-import { Caducidad } from '../../services/apiCaducidad';
+import { CaducidadModel } from '../../services/apiCaducidad';
 import TestCaducidadForm from './CaducidadForm';
 
-interface TestCaducidadProps {
+interface CaducidadProps {
   refresh: boolean;
   setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const TestCaducidad: React.FC<TestCaducidadProps> = ({
+const Caducidad: React.FC<CaducidadProps> = ({
   refresh,
   setRefresh
 }) => {
-  const [elementToEdit, setElementToEdit] = useState<Caducidad | null>(null);
+  const [elementToEdit, setElementToEdit] = useState<CaducidadModel | null>(null);
 
   return (
     <div className={styles.floating}>
@@ -25,4 +25,4 @@ const TestCaducidad: React.FC<TestCaducidadProps> = ({
     )
 };
 
-export default TestCaducidad;
+export default Caducidad;

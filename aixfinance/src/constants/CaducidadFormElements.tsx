@@ -1,9 +1,9 @@
 import React, {useState, useEffect } from 'react';
 import { getDate, getDatePlusOneDay, getDaysBetweenDates, evaluateIfDate2IsGreaterThanDate1, getDatePlusDays } from '../utils/dateUtils';
-import { Caducidad, createCaducidad, updateCaducidad,  } from '../services/apiCaducidad';
+import { CaducidadModel, createCaducidad, updateCaducidad } from '../services/apiCaducidad';
 interface CaducidadElementsProps {
   onCleanData?: () => void,
-  elementToEdit?: Caducidad,
+  elementToEdit?: CaducidadModel,
 }
 
 export const CaducidadElements = ({ onCleanData, elementToEdit}: CaducidadElementsProps) => {

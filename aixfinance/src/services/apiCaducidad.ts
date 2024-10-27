@@ -4,7 +4,7 @@ const api: AxiosInstance = axios.create({
   baseURL: 'http://localhost:3010/api',
 });
 
-export interface Caducidad {
+export interface CaducidadModel {
   _id: string;
   data: CaducidadData;
 }

@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import styles from '../../styles/Alimentos/CaducidadForm.module.css';
-import { Caducidad } from '../../services/apiCaducidad';
+import { CaducidadModel } from '../../services/apiCaducidad';
 import { CaducidadElements } from '../../constants/CaducidadFormElements';
 import { getDaysBetweenDates } from '../../utils/dateUtils';
-interface TestCaducidadFormProps {
+interface CaducidadFormProps {
   onAdd: () => void;
-  elementToEdit?: Caducidad;
+  elementToEdit?: CaducidadModel;
   onCleanData: () => void;
 }
 
-const TestCaducidadForm: React.FC<TestCaducidadFormProps> = ({
+const CaducidadForm: React.FC<CaducidadFormProps> = ({
   onAdd,
   elementToEdit,
   onCleanData
@@ -122,4 +122,4 @@ const TestCaducidadForm: React.FC<TestCaducidadFormProps> = ({
   );
 }
 
-export default TestCaducidadForm;
+export default CaducidadForm;
