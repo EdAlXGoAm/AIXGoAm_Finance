@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../../styles/Alimentos/CaducidadForm.module.css';
 import { CaducidadModel } from '../../services/apiCaducidad';
 import TestCaducidadForm from './CaducidadForm';
 
@@ -15,7 +14,7 @@ const Caducidad: React.FC<CaducidadProps> = ({
   const [elementToEdit, setElementToEdit] = useState<CaducidadModel | null>(null);
 
   return (
-    <div className={styles.floating}>
+    <div>
       <TestCaducidadForm
         onAdd={() => setRefresh((prev) => !prev)}
         elementToEdit={elementToEdit || undefined}

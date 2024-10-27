@@ -34,17 +34,12 @@ const CaducidadForm: React.FC<CaducidadFormProps> = ({
 
   useEffect(() => {
     if(elementToEdit) {
-      setFormData({
-        date_of_purchase: elementToEdit.data.date_of_purchase,
-        date_of_expiration: elementToEdit.data.date_of_expiration,
-      });
+      setFormData(elementToEdit.data);
       setIsOpen(true);
     }
   }, [elementToEdit]);
 
   const tileClassName = ({ date, view }: { date: Date, view: string }) => {
-    // console.log("Date: ", date, "\nView: ", view)
-    // console.log("Form data: ", formData)
     if (view === 'month') { // Solo aplicar en la vista de mes
       const purchaseDate = new Date(formData.date_of_purchase);
       const expirationDate = new Date(formData.date_of_expiration);
