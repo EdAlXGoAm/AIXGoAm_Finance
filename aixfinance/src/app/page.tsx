@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Canvas from '../components/Canvas';
 import Caducidad from '../components/Alimentos/Caducidad'
+import Estado from '../components/Alimentos/Estado'
 import '../styles/globals.css';
 
 const HomePage: React.FC = () => {
@@ -19,6 +20,9 @@ const HomePage: React.FC = () => {
       </div> */}
       <div>
         <Caducidad refresh={refresh} setRefresh={setRefresh}/>
+      </div>
+      <div>
+        <Estado refresh={refresh} setRefresh={setRefresh}/>
       </div>
     </div>
   );
