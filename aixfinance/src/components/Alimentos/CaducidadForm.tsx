@@ -3,7 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import styles from '../../styles/Alimentos/CaducidadForm.module.css';
 import { CaducidadModel } from '../../services/apiCaducidad';
-import { CaducidadElements } from '../../constants/CaducidadFormElements';
+import { CaducidadElements } from '../../constants/Alimentos/CaducidadFormElements';
 import { getDaysBetweenDates } from '../../utils/dateUtils';
 interface CaducidadFormProps {
   onAdd: () => void;
