@@ -4,7 +4,8 @@ import 'react-calendar/dist/Calendar.css';
 import styles from '../../styles/Alimentos/CaducidadForm.module.css';
 import { CaducidadModel } from '../../services/apiCaducidad';
 import { CaducidadElements } from '../../constants/Alimentos/CaducidadFormElements';
-import { getDaysBetweenDates } from '../../utils/dateUtils';
+import { getDaysBetweenDates, toISOStringLocal } from '../../utils/dateUtils';
+import { RowForm } from '../../utils/formatUtils';
 interface CaducidadFormProps {
   onAdd: () => void;
   elementToEdit?: CaducidadModel;
@@ -79,30 +80,36 @@ const CaducidadForm: React.FC<CaducidadFormProps> = ({
 
             {/* Formulario */}
             <form onSubmit={handleSubmit}>
-              <label>Fecha de compra</label>
-              <input
-                type="date"
-                name="date_of_purchase"
-                value={formData.date_of_purchase.toISOString().split('T')[0]}
-                onChange={handleChange}
-                required
-              />
-              <label>Fecha de expiración</label>
-              <input
-                type="date"
-                name="date_of_expiration"
-                value={formData.date_of_expiration.toISOString().split('T')[0]}
-                onChange={handleChange}
-                required
-              />
-              <label>Días a expiración</label>
-              <input
-                type="text"
-                name="days_to_expiration"
-                value={getDaysBetweenDates(formData.date_of_purchase, formData.date_of_expiration).toString()}
-                onChange={handleChange}
-                required
-              />
+              <RowForm>
+                <label>Fecha de compra</label>
+                <input
+                  type="date"
+                  name="date_of_purchase"
+                  value={toISOStringLocal(formData.date_of_purchase).split('T')[0]}
+                  onChange={handleChange}
+                  required
+                />
+              </RowForm>
+              <RowForm>
+                <label>Fecha de expiración</label>
+                <input
+                  type="date"
+                  name="date_of_expiration"
+                  value={toISOStringLocal(formData.date_of_expiration).split('T')[0]}
+                  onChange={handleChange}
+                  required
+                />
+              </RowForm>
+              <RowForm>
+                <label>Días a expiración</label>
+                <input
+                  type="text"
+                  name="days_to_expiration"
+                  value={getDaysBetweenDates(formData.date_of_purchase, formData.date_of_expiration).toString()}
+                  onChange={handleChange}
+                  required
+                />
+              </RowForm>
               {error && <p className={styles.error}>{error}</p>}
               <div className={styles.buttons}>
                 <button type="submit" disabled={loading}>

@@ -5,6 +5,7 @@ import Canvas from '../components/Canvas';
 import Caducidad from '../components/Alimentos/Caducidad'
 import Estado from '../components/Alimentos/Estado'
 import ParamConfig from '../components/Alimentos/ParamConfig'
+import Articulo from '../components/Alimentos/Articulo';
 import '../styles/globals.css';
 
 const HomePage: React.FC = () => {
@@ -27,6 +28,9 @@ const HomePage: React.FC = () => {
       </div>
       <div>
         <ParamConfig refresh={refresh} setRefresh={setRefresh}/>
+      </div>
+      <div>
+        <Articulo refresh={refresh} setRefresh={setRefresh}/>
       </div>
     </div>
   );

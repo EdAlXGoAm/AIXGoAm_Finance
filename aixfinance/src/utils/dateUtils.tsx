@@ -23,3 +23,8 @@ export function getDaysBetweenDates(date1: Date, date2: Date): number {
 export function evaluateIfDate2IsGreaterThanDate1(date1: Date, date2: Date): boolean {
   return date2.getTime() > date1.getTime();
 }
+
+export function toISOStringLocal(date: Date): string {
+  const userTimezoneOffset = new Date().getTimezoneOffset() * 60000;
+  return new Date(date.getTime() - userTimezoneOffset).toISOString();
+}

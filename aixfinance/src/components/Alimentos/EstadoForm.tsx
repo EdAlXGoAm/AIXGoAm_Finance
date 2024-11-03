@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '../../styles/Alimentos/EstadoForm.module.css';
 import { EstadoModel } from '../../services/apiEstado';
 import { EstadoElements } from '../../constants/Alimentos/EstadoFormElements';
+import { RowForm } from '../../utils/formatUtils';
 
 interface EstadoFormProps {
   onAdd: () => void;
@@ -48,26 +49,30 @@ const EstadoForm: React.FC<EstadoFormProps> = ({
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <h2>{elementToEdit ? 'Editar Estado' : 'Agregar Estado'}</h2>
             <form onSubmit={handleSubmit}>
-              <label>Nombre</label>
-              <select
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Seleccione un estado</option>
-                <option value="Nuevo">Nuevo</option>
-                <option value="Abierto">Abierto</option>
-                <option value="Consumido">Consumido</option>
-                <option value="Deshechado">Deshechado</option>
-              </select>
-              <label>Advertencia</label>
-              <input
-                type="text"
-                name="warning"
-                value={formData.warning}
-                onChange={handleChange}
-              />  
+              <RowForm>
+                <label>Nombre</label>
+                <select
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Seleccione un estado</option>
+                  <option value="Nuevo">Nuevo</option>
+                  <option value="Abierto">Abierto</option>
+                  <option value="Consumido">Consumido</option>
+                  <option value="Deshechado">Deshechado</option>
+                </select>
+              </RowForm>
+              <RowForm>
+                <label>Advertencia</label>
+                <input
+                  type="text"
+                  name="warning"
+                  value={formData.warning}
+                  onChange={handleChange}
+                />  
+              </RowForm>
               {error && <p className={styles.error}>{error}</p>}
               <div className={styles.buttons}>
                 <button type="submit" disabled={loading}>
