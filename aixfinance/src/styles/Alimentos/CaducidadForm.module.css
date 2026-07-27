@@ -13,6 +13,16 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.simpleButtonForForm {
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 8px 16px;
+}
+
+
 .overlay {
   position: fixed;
   top: 0;
@@ -71,29 +81,6 @@
   min-height: 60px;
 }
 
-.buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 16px;
-}
-
-.buttons button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.buttons button[type='submit'] {
-  background-color: #0070f3;
-  color: white;
-}
-
-.buttons button[type='button'] {
-  background-color: #ccc;
-  color: #333;
-}
 
 .error {
   color: red;

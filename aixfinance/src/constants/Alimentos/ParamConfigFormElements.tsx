@@ -1,66 +1,83 @@
-import React, { useState, useEffect } from 'react';
-import { ParamConfigModel, createParamConfig, updateParamConfig } from '../../services/apiParamConfig';
+import { ParamConfigModel, createParamConfig, updateParamConfig, RemoteParamConfigData } from '../../services/apiParamConfig';
+import { FloatingFormElements } from '../../commonForm/floatingFormElements';
 
-interface ParamConfigElementsProps {
-  onCleanData?: () => void,
+interface ParamConfigFormElementsProps {
+  onCleanElementToEdit: () => void,
   elementToEdit?: ParamConfigModel,
+  onAddResponse: (response: RemoteParamConfigData) => void,
+  onUpdateResponse: (response: RemoteParamConfigData) => void,
 }
 
-export const ParamConfigElements = ({ onCleanData, elementToEdit }: ParamConfigElementsProps) => {
+export const ParamConfigFormElements = ({
+  onCleanElementToEdit,
+  elementToEdit,
+  onAddResponse,
+  onUpdateResponse,
+}: ParamConfigFormElementsProps) => {
 
   const emptyElementData = {
-    amount_unit: "pz",
+    quantity_unit: "pz",
     weight_unit: "gr",
     volume_unit: "l",
-    preferred_unit: "amount_unit",
+    time_unit: "min",
+    default_unit: "quantity_unit",
+    reference_unit: "quantity_unit",
     states_list: ["Nuevo", "Abierto", "Consumido", "Deshechado"],
   };
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const {
+    isOpen,
+    error, setError,
+    loadingSubmit, setLoadingSubmit,
+    loadingForm, setLoadingForm,
+    formData, setFormData,
+    submitAction, setSubmitAction,
+    overlayRef,
+    modalRef,
+    handleCreateNewElement,
+    handleClose,
+    handleChangeTextAndSelect,
+    handleChangeList,
+    handleAddListItem,
+    handleRemoveListItem,
+    handleSubmitWithResponse,
+  } = FloatingFormElements({
+    onCleanElementToEdit,
+    elementToEdit,
+    emptyElementData,
+    apiCreate: createParamConfig,
+    apiUpdate: updateParamConfig,
+  });
 
-  const [formData, setFormData] = useState(emptyElementData);
-
-  const handleClose = () => {
-    setError(null)
-    setIsOpen(false);
-    setFormData(emptyElementData);
-    if(onCleanData) onCleanData();
-  }
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  }
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
+  const onSubmitParamConfig = async () => {
     try {
-      if(elementToEdit) {
-        await updateParamConfig(elementToEdit._id, formData);
-      } else {
-        await createParamConfig(formData);
+      const response = await handleSubmitWithResponse();
+      if (submitAction === 'create') {
+        onAddResponse(response);
+      } else if (submitAction === 'update') {
+        onUpdateResponse(response);
       }
-      handleClose();
     } catch (error: any) {
-      setError(error.message || 'Error al agregar el parámetro de configuración');
-    } finally {
-      setLoading(false);
+      setError(error.message || 'Error al agregar el elemento');
     }
   }
 
   return {
-    emptyElementData,
-    isOpen, setIsOpen,
+    isOpen,
     error, setError,
-    loading, setLoading,
+    loadingSubmit, setLoadingSubmit,
+    loadingForm, setLoadingForm,
     formData, setFormData,
-    handleChange,
-    handleSubmit,
-    handleClose
+    submitAction, setSubmitAction,
+    overlayRef,
+    modalRef,
+    handleCreateNewElement,
+    handleClose,
+    handleChangeTextAndSelect,
+    handleChangeList,
+    handleAddListItem,
+    handleRemoveListItem,
+    handleSubmitWithResponse,
+    onSubmitParamConfig,
   }
 }

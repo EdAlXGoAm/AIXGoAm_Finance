@@ -1,0 +1,36 @@
+.navBarContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.navBarBorder {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 90%;
+  padding: 10px;
+}
+
+.navBarHeader {
+  display: flex;
+  align-items: center;
+}
+
+.navBarTitle {
+  margin-top: 0;
+  margin-bottom: 15px;
+  margin-left: 10px;
+  text-align: left;
+}
+
+.animatedText {
+  margin-top: 0;
+  margin-bottom: 15px;
+  margin-left: 10px;
+  font-style: italic;
+  color: grey;
+  overflow: hidden;
+  white-space: nowrap;
+}

@@ -42,14 +42,10 @@ export const ArticuloElements = ({ onCleanData, elementToEdit }: ArticuloElement
     const { name, value } = e.target;
     if (name === "date_of_purchase") {
       const time_of_purchase = toISOStringLocal(formData.date_of_purchase).split('T')[1].slice(0, 5)
-      const new_date_of_purchase = new Date(value + 'T' + time_of_purchase)
-      console.log("new_date_of_purchase", new_date_of_purchase)
-      setFormData((prevData) => ({ ...prevData, [name]: new_date_of_purchase }));
+      setFormData((prevData) => ({ ...prevData, [name]: new Date(value + 'T' + time_of_purchase) }));
     } else if (name === "time_of_purchase") {
       const date_of_purchase = toISOStringLocal(formData.date_of_purchase).split('T')[0]
-      const new_date_of_purchase = new Date(date_of_purchase + 'T' + value)
-      console.log("new_date_of_purchase", new_date_of_purchase)
-      setFormData((prevData) => ({ ...prevData, ["date_of_purchase"]: new_date_of_purchase }));
+      setFormData((prevData) => ({ ...prevData, ["date_of_purchase"]: new Date(date_of_purchase + 'T' + value) }));
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
@@ -72,6 +68,18 @@ export const ArticuloElements = ({ onCleanData, elementToEdit }: ArticuloElement
     }
   }
 
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (e.target.value === 'Desconocido') {
+      setFormData({ ...formData, name: '' });
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (e.target.value.trim() === '') {
+      setFormData({ ...formData, name: 'Desconocido' });
+    }
+  };
+
   return {
     emptyElementData,
     isOpen, setIsOpen,
@@ -80,6 +88,8 @@ export const ArticuloElements = ({ onCleanData, elementToEdit }: ArticuloElement
     formData, setFormData,
     handleChange,
     handleSubmit,
-    handleClose
+    handleClose,
+    handleFocus,
+    handleBlur
   }
 }

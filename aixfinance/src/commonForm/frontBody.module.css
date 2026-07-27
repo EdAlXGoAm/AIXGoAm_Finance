@@ -1,0 +1,65 @@
+
+.error {
+  color: red;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 0 !important;
+}
+
+.formulasContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.formulaLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #0070f3;
+  border-radius: 5px;
+  padding: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  cursor: pointer;
+}
+.formulaLabel:hover {
+  background-color: #0070f3;
+  color: white;
+}
+
+.listBoxContainer {
+  border: 1px solid #000;
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.listBoxElement {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: nowrap;
+}
+
+.listBoxInput {
+  flex: 0 0 70%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 8px;
+  min-width: 200px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .listBoxElement {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .listBoxInput {
+    flex: 1 1 100%;
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+}

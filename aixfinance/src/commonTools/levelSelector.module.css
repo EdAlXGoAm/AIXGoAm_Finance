@@ -1,0 +1,56 @@
+/* LevelSelector.module.css */
+
+.levelSelector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.levelItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.point {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #ddd;
+  margin-bottom: 4px;
+  transition: background-color 0.3s;
+}
+
+.selected .point {
+  background-color: #0070f3;
+}
+
+.label {
+  font-size: 14px;
+}
+
+.levelItem:hover .point {
+  background-color: #bbb;
+}
+
+.selected .label {
+  font-weight: bold;
+}
+
+.levelItem:nth-child(1) .point {
+  background-color: #4caf50; /* Verde para "Deseo" */
+}
+
+.levelItem:nth-child(2) .point {
+  background-color: #ff9800; /* Naranja para "Necesario" */
+}
+
+.levelItem:nth-child(3) .point {
+  background-color: #f44336; /* Rojo para "Urgente" */
+}
+
+.selected .point {
+  border: 2px solid #000;
+}

@@ -4,13 +4,15 @@ import { CaducidadModel, createCaducidad, updateCaducidad } from '../../services
 interface CaducidadElementsProps {
   onCleanData?: () => void,
   elementToEdit?: CaducidadModel,
+  onCreateCaducidadId: (id: string) => void,
+  onRefreshCaducidads: () => void,
 }
 
-export const CaducidadElements = ({ onCleanData, elementToEdit}: CaducidadElementsProps) => {
+export const CaducidadElements = ({ onCleanData, elementToEdit, onCreateCaducidadId, onRefreshCaducidads }: CaducidadElementsProps) => {
 
   const emptyElementData = {
-    date_of_purchase: getDate(),
-    date_of_expiration: getDatePlusOneDay(),
+    datePurchase: getDate(),
+    dateExpiration: getDatePlusOneDay(),
   };
   
   const [isOpen, setIsOpen] = useState(false);
@@ -30,18 +32,16 @@ export const CaducidadElements = ({ onCleanData, elementToEdit}: CaducidadElemen
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    if (name === "date_of_purchase") {
-      const diff_date = getDaysBetweenDates(formData.date_of_purchase, formData.date_of_expiration)
+    if (name === "datePurchase") {
+      const diff_date = getDaysBetweenDates(formData.datePurchase, formData.dateExpiration)
       const new_date_of_purchase = new Date(value + 'T00:00:00')
       const new_date_of_expiration = getDatePlusDays(new_date_of_purchase, diff_date)
-      console.log("new_date_of_purchase", new_date_of_purchase)
-      console.log("new_date_of_expiration", new_date_of_expiration)
       setFormData({
-        date_of_purchase: new_date_of_purchase,
-        date_of_expiration: new_date_of_expiration,
+        datePurchase: new_date_of_purchase,
+        dateExpiration: new_date_of_expiration,
       })
-    } else if (name === "date_of_expiration") {
-      if (!evaluateIfDate2IsGreaterThanDate1(formData.date_of_purchase, new Date(value + 'T00:00:00'))) {
+    } else if (name === "dateExpiration") {
+      if (!evaluateIfDate2IsGreaterThanDate1(formData.datePurchase, new Date(value + 'T00:00:00'))) {
         setError("La fecha de expiración debe ser mayor que la fecha de compra");
       } else {
         setError(null);
@@ -56,7 +56,7 @@ export const CaducidadElements = ({ onCleanData, elementToEdit}: CaducidadElemen
         setError("El campo días a expiración es requerido");
         setFormData((prevData) => ({
           ...prevData,
-          date_of_expiration: getDatePlusDays(formData.date_of_purchase, 0),
+          dateExpiration: getDatePlusDays(formData.datePurchase, 0),
         }));
       } else {
         if (Number(value) > 0) {
@@ -64,13 +64,13 @@ export const CaducidadElements = ({ onCleanData, elementToEdit}: CaducidadElemen
           setFormData((prevData) => ({
             ...prevData,
             [name]: value,
-            date_of_expiration: getDatePlusDays(formData.date_of_purchase, Number(value)),
+            dateExpiration: getDatePlusDays(formData.datePurchase, Number(value)),
           }));
         } else {
           setError("El campo días a expiración debe ser un número positivo");
           setFormData((prevData) => ({
             ...prevData,
-            date_of_expiration: getDatePlusDays(formData.date_of_purchase, 0),
+            dateExpiration: getDatePlusDays(formData.datePurchase, 0),
           }));
         }
       }
@@ -90,9 +90,14 @@ export const CaducidadElements = ({ onCleanData, elementToEdit}: CaducidadElemen
       if(elementToEdit) {
         await updateCaducidad(elementToEdit._id, formData);
       } else {
-        await createCaducidad(formData);
+        const response = await createCaducidad(formData);
+        const remoteCaducidad = response.data;
+        if (remoteCaducidad._id) {
+          onCreateCaducidadId(remoteCaducidad._id);
+        }
       }
       handleClose();
+      onRefreshCaducidads();
     } catch (error: any) {
       setError(error.message || 'Error al agregar la caducidad');
     } finally {
@@ -107,21 +112,20 @@ export const CaducidadElements = ({ onCleanData, elementToEdit}: CaducidadElemen
       end.setHours(0, 0, 0, 0);
       setFormData({
         ...formData,
-        date_of_purchase: start,
-        date_of_expiration: end,
+        datePurchase: start,
+        dateExpiration: end,
       });
     }
   };
   
   return {
-    emptyElementData,
     isOpen, setIsOpen,
     error, setError,
     loading, setLoading,
     formData, setFormData,
+    handleClose,
     handleChange,
     handleSubmit,
-    handleClose,
     handleCalendarChange
   };
 }

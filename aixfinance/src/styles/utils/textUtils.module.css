@@ -1,0 +1,26 @@
+.paragraph {
+  margin: 0;
+}
+
+.textLine {
+  margin: 0;
+}
+
+.variable {
+  font-weight: bold;
+}
+
+.centeredLabel {
+  text-align: center;
+}
+
+.centeredSelect {
+  width: 80%;
+}
+
+.centeredSelectContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

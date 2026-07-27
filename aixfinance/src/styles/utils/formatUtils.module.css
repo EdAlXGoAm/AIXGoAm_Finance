@@ -1,0 +1,60 @@
+.custAddButton {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  height: 100%;
+  border: 1px solid rgb(132, 255, 98);
+  border-radius: '5px';
+  background-color: rgb(132, 255, 98);
+  padding: 5px;
+}
+
+.faButtons {
+  cursor: pointer;
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  border: 1px solid #0070f3;
+  border-radius: 50%;
+  background-color: #0070f3;
+  color: white;
+  padding: 5px;
+}
+
+.tableCRUD {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tdCRUD {
+  text-align: center;
+}
+
+.faContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+
+.paddingSpanText {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.textSmallBold {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 16px;
+  color: #212529;
+}
+.textSmall {
+  font-size: 16px;
+  font-style: italic;
+}
